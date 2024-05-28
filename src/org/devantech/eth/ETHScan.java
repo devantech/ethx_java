@@ -306,6 +306,7 @@ public class ETHScan {
                         case 21:    // ETH8020 32 bit
                         case 51:    // ETH1620
                         case 52:    // ETH1610
+                        case 54:    // ETH24V008
                         case 200:   // ETH-UPLOADER
                             ScanResult r = new ScanResult(ip_addr, host_name, (int)temp[0]  & 0xFF, mac_address);
                             updateDelegates(r);

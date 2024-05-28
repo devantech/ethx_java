@@ -61,6 +61,11 @@ public class ModuleData {
     public static final int ETH1610_ID = 52;
     
     /**
+     * The ID of an ETH24V008
+     */
+    private static final int ETH24V008_ID = 54;
+    
+    /**
      * The module ID
      */
     public final int id;
@@ -128,6 +133,9 @@ public class ModuleData {
                 return "ETH1620";
             case ETH1610_ID:
                 return "ETH1610";
+            case ETH24V008_ID:
+                return "ETH24V008";
+                
         }
     }
     
@@ -156,6 +164,8 @@ public class ModuleData {
                 return 3;
             case ETH1610_ID:
                 return 2;
+            case ETH24V008_ID:
+                return 1;
         }
     }
     
@@ -176,6 +186,8 @@ public class ModuleData {
                 return 4;
             case ETH044_ID:
                 return 2;
+            case ETH24V008_ID:
+                return 1;
         }
     }
     
