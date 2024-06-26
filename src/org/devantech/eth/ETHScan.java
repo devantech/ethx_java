@@ -41,13 +41,6 @@ public class ETHScan {
     private DatagramPacket packet;
     
     /**
-     * Create an instance of ETHScan
-     */
-    ETHScan() {
-        
-    }
-    
-    /**
      * Holds the details of a module that has been found.
      */
     public class ScanResult {
@@ -327,6 +320,7 @@ public class ETHScan {
                     return;
                     
                 default:
+                    addEntryForMLAAnnoucePacket(receivedPacket);
                     return;
             }
             if (packet_buffer[data_count] == 0x0d) {
@@ -336,6 +330,68 @@ public class ETHScan {
                 data_count++;
             }
         }
+    }
+    
+    public boolean addEntryForMLAAnnoucePacket(DatagramPacket receivedPacket) {
+        
+        String packetString = new String(receivedPacket.getData());
+        String[] packetBuf = packetString.split("\r\n");
+
+        // Get the hostname
+        String host_name = "";
+        if (packetBuf[0].isEmpty()) {
+            return false;
+        }
+        host_name = host_name.concat(packetBuf[0]);
+        // TODO: get module ID from host name.
+                
+        // Get the MAC address
+        if (packetBuf[1].isEmpty()) {
+            return false;
+        }
+        String mac_address = "";
+        mac_address = mac_address.concat(packetBuf[1]);
+        
+        // Get the IP address
+        String ip_addr = receivedPacket.getAddress().toString();
+        if (!ip_addr.isEmpty()) {
+            ip_addr = ip_addr.replace("/", "");
+        } else {
+            return false;
+        }
+        
+        ScanResult r = new ScanResult(ip_addr, host_name, hostnameToID(host_name), mac_address);
+        updateDelegates(r);
+        
+        return true;
+    }
+    
+    /**
+     * Convert the hostname of a module into the module ID. This is only 
+     * used by older 32 bit modules that used the old MLA stack.
+     * 
+     * @param hn the host name
+     * @return the module ID
+     */
+    private int hostnameToID(String hn) {
+        
+        switch(hn.trim().toUpperCase()) {
+            case "ETH0621":
+                return 23;
+            case "ETH002":
+                return 18;   // ETH002 32 bit
+            case "ETH008":
+                return 19;    // ETH008 32 bit
+            case "ETH484":
+                return 20;    // ETH484 32 bit
+            case "ETH8020":
+                return 21;    // ETH8020 32 bit
+            case "ETH-UPLOADER":
+                return 200;   // ETH-UPLOADER
+            default:
+                return 0;
+        }
+        
     }
     
     /**
