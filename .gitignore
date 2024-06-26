@@ -1,4 +1,4 @@
 # Ignore the build and dist dirs
 build/
 dist/
-
+/nbproject/private/
