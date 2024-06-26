@@ -41,6 +41,13 @@ public class ETHScan {
     private DatagramPacket packet;
     
     /**
+     * Create an instance of ETHScan
+     */
+    ETHScan() {
+        
+    }
+    
+    /**
      * Holds the details of a module that has been found.
      */
     public class ScanResult {

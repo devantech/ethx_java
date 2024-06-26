@@ -59,7 +59,7 @@ public class ETHModule {
      * @param ip the IP of the module
      * @param port the port to talk on
      * @param password the password to send
-     * @throws IOException 
+     * @throws IOException an error while trying to communicate with the module
      */
     public ETHModule(String ip, int port, String password) throws IOException {
         socket = new Socket(ip, port);
@@ -77,7 +77,7 @@ public class ETHModule {
      * 
      * @param ip the IP of the module
      * @param port the port to talk on
-     * @throws IOException 
+     * @throws IOException an error while trying to communicate with the module
      */
     public ETHModule(String ip, int port) throws IOException {
         socket = new Socket(ip, port);

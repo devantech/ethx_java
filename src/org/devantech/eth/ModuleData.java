@@ -15,7 +15,8 @@
 package org.devantech.eth;
 
 /**
- *
+ * Holds information about the different module.
+ * 
  * @author James Henderson
  */
 public class ModuleData {
