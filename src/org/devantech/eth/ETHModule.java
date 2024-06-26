@@ -505,11 +505,12 @@ public class ETHModule {
         byte[] data = new byte[127];
         data[0] = SET_ANALOGUE_VOLTAGE;
         data[1] = (byte) (channel & 0xff);
-        data[2] = (byte) (value & 0xff);
-        data[3] = (byte) (time & 0xff);
+        data[2] = (byte) 0; // This byte is not used yet for the ETH044, 04 ETH0621
+        data[3] = (byte) (value & 0xff);
+        data[4] = (byte) (time & 0xff);
 
         try {
-            output.write(data, 0, 4);
+            output.write(data, 0, 5);
             input.read(data, 0, 1);
         } catch (IOException ex) {
             Logger.getLogger(ETHModule.class.getName()).log(Level.SEVERE, null, ex);
