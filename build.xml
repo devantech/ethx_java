@@ -80,8 +80,6 @@
     </target>
     
     <target name="-post-jar" description="bundle sources and javadoc in a jar" depends="javadoc">
-        <property name="version.num" value="1.0"/>
-        <buildnumber file="build.num"/>
         <jar compress="${jar.compress}" basedir="${dist.javadoc.dir}" jarfile="${dist.dir}/ETHx-${version.num}.${build.number}-javadoc.jar"/>
     </target>
     
