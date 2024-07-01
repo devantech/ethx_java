@@ -89,7 +89,7 @@ public class ModuleData {
     /**
      *  The number of analogue outputs this module has
      */
-    public final int analogue_output_count;
+    public final int variable_output_count;
 
     /**
      *  The name of the module
@@ -106,7 +106,7 @@ public class ModuleData {
         digital_input_byte_count = digitalInByteCount();
         digital_output_byte_count = digitalOutByteCount();
         analogue_input_count = analogueInputCount();
-        analogue_output_count = analogueOutputCount();
+        variable_output_count = analogueOutputCount();
     }
     
     /**

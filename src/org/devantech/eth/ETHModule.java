@@ -35,6 +35,7 @@ public class ETHModule {
     private static final byte GET_ANALOGUE_INPUT = 0x32;
     private static final byte GET_ANALOGUE_INPUT_12_BIT = 0x33;
     private static final byte SET_ANALOGUE_VOLTAGE = 0x30;
+    private static final byte GET_ANALOGUE_OUTPUT = 0x31;
     private static final byte DIGITAL_OUTPUT_ACTIVE = 0x20;
     private static final byte DIGITAL_OUTPUT_INACTIVE = 0x21;
     private static final byte GET_SERIAL_NUMBER = 0x77;
@@ -338,7 +339,7 @@ public class ETHModule {
      * @return a byte array with the output states in, or null if an error
      * occurred.
      */
-    public byte[] getAnalogueVoltage(int channel) {
+    public byte[] getAnalogueInput(int channel) {
 
         if (mod.analogue_input_count == 0) {
             return null;
@@ -373,7 +374,7 @@ public class ETHModule {
      * @return a byte array with the output states in, or null if an error
      * occurred.
      */
-    public byte[] getAnalogueVoltage12Bit(int channel) {
+    public byte[] getAnalogueInput12Bit(int channel) {
 
         if (mod.analogue_input_count == 0) {
             return null;
@@ -405,8 +406,8 @@ public class ETHModule {
      * @param channel the channel to read
      * @return and int representing the analogue input value.
      */
-    public int getAnalogueVoltageInt(int channel) {
-        byte[] vts = getAnalogueVoltage(channel);
+    public int getAnalogueInputInt(int channel) {
+        byte[] vts = getAnalogueInput(channel);
         int out = vts[0] & 0xff;
         out <<= 8;
         out |= vts[1] & 0xff;
@@ -421,8 +422,8 @@ public class ETHModule {
      * @param channel the channel to read
      * @return and int representing the analogue input value.
      */
-    public int getAnalogueVoltage12BitInt(int channel) {
-        byte[] vts = getAnalogueVoltage12Bit(channel);
+    public int getAnalogueInput12BitInt(int channel) {
+        byte[] vts = getAnalogueInput12Bit(channel);
         int out = vts[0] & 0xff;
         out <<= 8;
         out |= vts[1] & 0xff;
@@ -493,12 +494,12 @@ public class ETHModule {
      *
      * @return 1 for success, 0 for failure and -1 for error.
      */
-    public int setAnalogueVoltage(int channel, int value, int time) {
+    public int setVariableOutput(int channel, int value, int time) {
 
-        if (mod.analogue_output_count == 0) {
+        if (mod.variable_output_count == 0) {
             return -1;
         }
-        if (channel > mod.analogue_output_count) {
+        if (channel > mod.variable_output_count) {
             return -1;
         }
 
@@ -519,6 +520,57 @@ public class ETHModule {
 
         return data[0];
 
+    }
+    
+    /**
+     * Get the value of an analogue output channel.
+     * 
+     * @param channel the channel to get.
+     * 
+     * @return a byte array, or null on an error.
+     */
+    public byte[] getVariableOutput(int channel) {
+        
+        if (mod.variable_output_count == 0) {
+            return null;
+        }
+        if (channel > mod.variable_output_count) {
+            return null;
+        }
+
+        byte[] data = new byte[2];
+        data[0] = GET_ANALOGUE_OUTPUT;
+        data[1] = (byte) (channel & 0xff);
+
+        try {
+            output.write(data, 0, 2);
+            input.read(data, 0, 2);
+        } catch (IOException ex) {
+            Logger.getLogger(ETHModule.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+        
+        return data;
+        
+    }
+    
+    /**
+     * Get the value of an analogue output channel.
+     * -1
+     * @param channel the channel to get.
+     * 
+     * @return the value, or -1 on an error.
+     */
+    public int getVariableOutputInt(int channel) {
+        
+        byte[] data = getVariableOutput(channel);
+        
+        int out = data[0] & 0xff;
+        out <<= 8;
+        out |= data[1] & 0xff;
+        
+        return out;
+        
     }
 
 }
